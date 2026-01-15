@@ -1,5 +1,14 @@
 package org.firstinspires.ftc.teamcode.robolutionaries;
 
-public class SampleOpMode {
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+
+@TeleOp
+public class SampleOpMode extends OpMode {
+
+    @Override
+    public void init(){
+        telemetry.addData("hello", "World");
+    }
 }
