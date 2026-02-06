@@ -9,6 +9,11 @@ public class SampleOpMode extends OpMode {
 
     @Override
     public void init(){
-        telemetry.addData("hello", "World");
+        telemetry.addData("testing-caption", "testing-value");
+    }
+
+    @Override
+    public void loop(){
+         
     }
 }
