@@ -22,3 +22,17 @@ Android Studio connection:
     pressing control + R at the same time, this will upload the code to the driver hub
     NOTE* press options and O or X at the same time on the controller in order to turn
     it on
+
+IMPORTANT INFO 
+
+mainConfig on Driver Hub
+
+Motors:
+Port 0: leftDrive
+Port 1: rightDrive 
+port 2: flywheelMotor
+
+Servos:
+Port 0: flywheelServo
+Port 1: leftOrange
+Port 2: rightOrange

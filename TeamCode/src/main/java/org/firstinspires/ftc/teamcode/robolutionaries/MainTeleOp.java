@@ -2,20 +2,21 @@ package org.firstinspires.ftc.teamcode.robolutionaries;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="Drivetrain Control", group="Drive")
-public class DriveTrainTeleOp extends OpMode{
+@TeleOp(name="MAIN", group="Testing")
+public class MainTeleOp extends OpMode{
 
     private DcMotor leftDrive;
     private DcMotor rightDrive;
-    private DcMotor flywheelMotor;  // declaring the flywheel motor so we can use it throughout the class
+    private DcMotor flywheelMotor;
 
-    private Servo leftOrange;
-    private Servo rightOrange;
-    private Servo flywheelServo;
+    private CRServo leftOrange;
+    private CRServo rightOrange;
+    private CRServo flywheelServo;
 
     @Override
     // overriding the init method that we inherit from OpMode (in line 9) in order to have our
@@ -31,11 +32,13 @@ public class DriveTrainTeleOp extends OpMode{
         // getting the flywheel motor from the configuration file
         // make sure "flywheelMotor" matches exactly what you named it in the Control Hub config
 
-        leftOrange = hardwareMap.get(Servo.class, "leftOrange");
-        rightOrange = hardwareMap.get(Servo.class, "rightOrange");
-        flywheelServo = hardwareMap.get(Servo.class, "flywheelServo");
+        leftOrange = (CRServo) hardwareMap.get(CRServo.class, "leftOrange");
+        rightOrange = (CRServo) hardwareMap.get(CRServo.class, "rightOrange");
+        flywheelServo = (CRServo) hardwareMap.get(CRServo.class, "flywheelServo");
 
         rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        flywheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //flywheelServo.setDirection(CRServo.Direction.REVERSE);
         // this makes sure the robot will move fine and can turn
 
         telemetry.addData("Status", "Initialized");
@@ -44,7 +47,7 @@ public class DriveTrainTeleOp extends OpMode{
 
     @Override
     public void loop(){
-        // --- DRIVETRAIN CONTROL ---
+        //
         double drive = -gamepad1.left_stick_y;  // gets how far forward/backward the stick is pushed
         double turn = gamepad1.right_stick_x;   // gets how far left/right the stick is pushed
 
@@ -62,29 +65,33 @@ public class DriveTrainTeleOp extends OpMode{
         leftDrive.setPower(leftPower);   // send the calculated power to left motor
         rightDrive.setPower(rightPower); // send the calculated power to right motor
 
+        // rotates flywheel motors/servos
         if(gamepad1.x){
-            flywheelMotor.setPower(0.75);
-            flywheelServo.setPosition(1.0);
+            flywheelMotor.setPower(1.0);
+            //flywheelServo.setPower(-1.0);
         }
         else{
             flywheelMotor.setPower(0.0);
-            flywheelServo.setPosition(0.0);
+            //flywheelServo.setPower(0.0);
         }
-
-
-        if(gamepad1.y){
-            leftOrange.setPosition(1.0);
-            rightOrange.setPosition(1.0);
+        if(gamepad1.b){
+            // flywheelServo.setPower(1.0);
         }
         else{
-            leftOrange.setPosition(0.5);
-            rightOrange.setPosition(0.5);
+            //  flywheelServo.setPower(0.0);
         }
-        // flywheel power
-        // this sets the flywheel to spin at 75% power automatically
-        // it will keep spinning the entire time the OpMode is running
-        // you can change 0.75 to any value from 0.0 (stopped) to 1.0 (full speed)
+        // rotates the two servos that allow balls to enter the shooter
+        if(gamepad1.y){
+            leftOrange.setPower(1.0);
+            rightOrange.setPower(-1.0);
+            flywheelServo.setPower(1.0);
 
+        }
+        else{
+            leftOrange.setPower(0.0);
+            rightOrange.setPower(0.0);
+            flywheelServo.setPower(0.0);
+        }
         // telemetry data (displaying info on Driver Hub screen)
         telemetry.addData("Left Power", "%.2f", leftPower);
         telemetry.addData("Right Power", "%.2f", rightPower);
